@@ -1,0 +1,33 @@
+<html>
+  <body>
+    <div id="text"></div>
+  </body>
+  <script>
+    (function(){
+	const log = (data) => {
+	    console.log(data)
+	    return data;
+	};
+	document.body.onload = (e) => {
+	    fetch("http://provider:3000/authorize", {
+		credentials: "include",
+		method: "GET",
+	    })
+		.then(log).catch(log)
+		.then(res => {
+		    if (res.ok) {
+			return res.json()
+		    } else {
+			window.location.href = "http://provider:3000/authorize?get=true&redirect=http://provider:3000/app.html"
+		    }
+		})
+		.then(user => {
+		    document.getElementById("text").innerhtml = "hello " + 
+			user.username + "! your token is " + token;
+		})
+		.then(log)
+		.catch(log);
+	}
+    }())
+  </script>
+</html>
